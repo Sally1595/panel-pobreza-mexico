@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de pobreza en México</title>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: Arial, sans-serif;
+      color: #243247;
+      background: #f0f3f8;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    .tarjeta {
+      margin-top: 24px;
+      padding: 24px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .grafico {
+      width: 100%;
+      height: 460px;
+    }
+
+    .nota {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  </style>
+
+  <script>
+    google.charts.load('current', {
+      packages: ['corechart'],
+      language: 'es'
+    });
+
+    google.charts.setOnLoadCallback(dibujarGraficos);
+
+    function dibujarGraficos() {
+      const datos = google.visualization.arrayToDataTable([
+        ['Carencia social', '2008', '2018'],
+        ['Rezago educativo', 21.9, 16.9],
+        ['Servicios de salud', 38.4, 16.2],
+        ['Seguridad social', 65.0, 57.3],
+        ['Calidad y espacios de vivienda', 17.7, 11.1],
+        ['Servicios básicos de vivienda', 22.9, 19.8],
+        ['Alimentación', 21.7, 20.4]
+      ]);
+
+      const formato = new google.visualization.NumberFormat({
+        suffix: ' %',
+        fractionDigits: 1
+      });
+
+      formato.format(datos, 1);
+      formato.format(datos, 2);
+
+      const opciones = {
+        colors: ['#355caa', '#008577'],
+        legend: { position: 'top' },
+        chartArea: {
+          left: 75,
+          top: 60,
+          width: '82%',
+          height: '60%'
+        },
+        hAxis: {
+          slantedText: true,
+          slantedTextAngle: 30,
+          textStyle: { fontSize: 11 }
+        },
+        vAxis: {
+          title: 'Población con la carencia (%)',
+          viewWindow: { min: 0, max: 70 }
+        },
+        height: 460
+      };
+
+      const grafico = new google.visualization.ColumnChart(
+        document.getElementById('grafico_carencias')
+      );
+
+      grafico.draw(datos, opciones);
+      dibujarEntidades();
+      dibujarEvolucion();
+      dibujarDistribucion();
+      dibujarCombinado();
+    }
+
+        function dibujarEntidades() {
+      const datos = google.visualization.arrayToDataTable([
+        ['Entidad', '2008', '2018'],
+        ['Chiapas', 77.0, 76.4],
+        ['Guerrero', 68.4, 66.5],
+        ['Oaxaca', 61.8, 66.4],
+        ['Veracruz', 51.2, 61.8]
+      ]);
+
+      const formato = new google.visualization.NumberFormat({
+        suffix: ' %',
+        fractionDigits: 1
+      });
+
+      formato.format(datos, 1);
+      formato.format(datos, 2);
+
+      const opciones = {
+        colors: ['#355caa', '#008577'],
+        legend: { position: 'top' },
+        chartArea: {
+          left: 100,
+          top: 60,
+          width: '75%',
+          height: '70%'
+        },
+        hAxis: {
+          title: 'Población en situación de pobreza (%)',
+          viewWindow: { min: 0, max: 100 }
+        },
+        height: 460
+      };
+
+      const grafico = new google.visualization.BarChart(
+        document.getElementById('grafico_entidades')
+      );
+
+      grafico.draw(datos, opciones);
+    }
+
+        function dibujarEvolucion() {
+      const datos = google.visualization.arrayToDataTable([
+        ['Año', 'Pobreza', 'Pobreza extrema'],
+        ['2008', 44.4, 11.0],
+        ['2010', 46.1, 11.3],
+        ['2012', 45.5, 9.8],
+        ['2014', 46.2, 9.5],
+        ['2016', 43.6, 7.6],
+        ['2018', 41.9, 7.4]
+      ]);
+
+      const formato = new google.visualization.NumberFormat({
+        suffix: ' %',
+        fractionDigits: 1
+      });
+
+      formato.format(datos, 1);
+      formato.format(datos, 2);
+
+      const opciones = {
+        colors: ['#355caa', '#008577'],
+        legend: { position: 'top' },
+        lineWidth: 3,
+        pointSize: 7,
+        chartArea: {
+          left: 80,
+          top: 60,
+          width: '80%',
+          height: '70%'
+        },
+        hAxis: {
+          title: 'Año'
+        },
+        vAxis: {
+          title: 'Población en situación de pobreza (%)',
+          viewWindow: { min: 0, max: 50 }
+        },
+        height: 460
+      };
+
+      const grafico = new google.visualization.LineChart(
+        document.getElementById('grafico_evolucion')
+      );
+
+      grafico.draw(datos, opciones);
+    }
+
+        function dibujarDistribucion() {
+      const datos = google.visualization.arrayToDataTable([
+        ['Situación', 'Porcentaje de población'],
+        ['Pobreza moderada', 34.5],
+        ['Pobreza extrema', 7.4],
+        ['Fuera de la situación de pobreza', 58.1]
+      ]);
+
+      const formato = new google.visualization.NumberFormat({
+        suffix: ' %',
+        fractionDigits: 1
+      });
+
+      formato.format(datos, 1);
+
+      const opciones = {
+        colors: ['#355caa', '#b34747', '#008577'],
+        legend: {
+          position: 'bottom',
+          maxLines: 3,
+          textStyle: { fontSize: 12 }
+        },
+        chartArea: {
+          left: '10%',
+          top: 25,
+          width: '80%',
+          height: '75%'
+        },
+        pieSliceText: 'percentage',
+        pieSliceTextStyle: { fontSize: 16 },
+        tooltip: { text: 'value' },
+        height: 460
+      };
+
+      const grafico = new google.visualization.PieChart(
+        document.getElementById('grafico_distribucion')
+      );
+
+      grafico.draw(datos, opciones);
+    }
+
+        function dibujarCombinado() {
+      const datos = google.visualization.arrayToDataTable([
+        ['Año', 'Personas en pobreza (millones)', 'Población en pobreza (%)'],
+        ['2008', 49.5, 44.4],
+        ['2010', 52.8, 46.1],
+        ['2012', 53.3, 45.5],
+        ['2014', 55.3, 46.2],
+        ['2016', 53.4, 43.6],
+        ['2018', 52.4, 41.9]
+      ]);
+
+      const formatoMillones = new google.visualization.NumberFormat({
+        suffix: ' millones',
+        fractionDigits: 1
+      });
+
+      const formatoPorcentaje = new google.visualization.NumberFormat({
+        suffix: ' %',
+        fractionDigits: 1
+      });
+
+      formatoMillones.format(datos, 1);
+      formatoPorcentaje.format(datos, 2);
+
+      const opciones = {
+        colors: ['#355caa', '#008577'],
+        seriesType: 'bars',
+        series: {
+          0: { targetAxisIndex: 0 },
+          1: {
+            type: 'line',
+            targetAxisIndex: 1,
+            lineWidth: 3,
+            pointSize: 7
+          }
+        },
+        legend: {
+          position: 'top',
+          maxLines: 2
+        },
+        chartArea: {
+          left: 90,
+          top: 70,
+          width: '75%',
+          height: '65%'
+        },
+        hAxis: {
+          title: 'Año'
+        },
+        vAxes: {
+          0: {
+            title: 'Personas en pobreza (millones)',
+            viewWindow: { min: 0, max: 60 }
+          },
+          1: {
+            title: 'Población en pobreza (%)',
+            viewWindow: { min: 0, max: 100 }
+          }
+        },
+        height: 460
+      };
+
+      const grafico = new google.visualization.ComboChart(
+        document.getElementById('grafico_combinado')
+      );
+
+      grafico.draw(datos, opciones);
+    }
+
+    window.addEventListener('resize', function () {
+      if (google.visualization) {
+        dibujarGraficos();
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <main>
+    <h1>Panel de pobreza en México</h1>
+    <p>Comparación de indicadores de CONEVAL del periodo 2008–2018.</p>
+
+    <section class="tarjeta">
+      <h2>1. Carencias sociales en México</h2>
+      <p>Porcentaje de población con cada carencia en 2008 y 2018.</p>
+
+      <div id="grafico_carencias" class="grafico"></div>
+
+      <p class="nota">
+        Una misma persona puede presentar varias carencias;
+        estos porcentajes no deben sumarse.
+      </p>
+      <p class="nota">
+        Fuente: CONEVAL (2019), comunicado de medición de pobreza
+        2008–2018, páginas 5–6.
+      </p>
+    </section>
+
+     <section class="tarjeta">
+      <h2>2. Pobreza en entidades seleccionadas</h2>
+      <p>Comparación del porcentaje de población en pobreza en 2008 y 2018.</p>
+
+      <div id="grafico_entidades" class="grafico"></div>
+
+      <p class="nota">
+        Se presentan cuatro entidades seleccionadas;
+        esta comparación no representa la totalidad del país.
+      </p>
+      <p class="nota">
+        Fuente: CONEVAL (2019), comunicado de medición de pobreza
+        2008–2018, página 1.
+      </p>
+    </section>
+
+        <section class="tarjeta">
+      <h2>3. Evolución de la pobreza en México</h2>
+      <p>Porcentaje de población en pobreza y pobreza extrema, 2008–2018.</p>
+
+      <div id="grafico_evolucion" class="grafico"></div>
+
+      <p class="nota">
+        La pobreza extrema está incluida dentro de la pobreza total;
+        los porcentajes de ambas series no deben sumarse.
+      </p>
+      <p class="nota">
+        Fuente: CONEVAL (2019), comunicado de medición de pobreza
+        2008–2018, página 3.
+      </p>
+    </section>
+
+        <section class="tarjeta">
+      <h2>4. Distribución de la población según su situación de pobreza</h2>
+      <p>Participación de cada categoría en la población de México en 2018.</p>
+
+      <div id="grafico_distribucion" class="grafico"></div>
+
+      <p class="nota">
+        Las tres categorías son excluyentes y suman el 100 %.
+        La población fuera de la situación de pobreza puede presentar
+        vulnerabilidad por ingresos o carencias sociales.
+      </p>
+      <p class="nota">
+        Pobreza moderada: 41.9 − 7.4 = 34.5 %.
+        Fuera de pobreza: 100 − 41.9 = 58.1 %.
+      </p>
+      <p class="nota">
+        Fuente: elaboración propia con base en CONEVAL (2019),
+        comunicado de medición de pobreza 2008–2018, página 3.
+      </p>
+    </section>
+
+        <section class="tarjeta">
+      <h2>5. Pobreza en porcentaje y millones de personas</h2>
+      <p>Comparación de la cantidad y la proporción de población en pobreza.</p>
+
+      <div id="grafico_combinado" class="grafico"></div>
+
+      <p class="nota">
+        Las columnas azules se leen con el eje izquierdo, en millones
+        de personas. La línea verde se lee con el eje derecho, en porcentaje.
+        Sus alturas no deben compararse directamente porque tienen
+        unidades y escalas diferentes.
+      </p>
+      <p class="nota">
+        En 2018, el porcentaje de pobreza fue menor que en 2008,
+        mientras que la cantidad de personas en pobreza fue mayor.
+      </p>
+      <p class="nota">
+        Fuente: CONEVAL (2019), comunicado de medición de pobreza
+        2008–2018, página 3.
+      </p>
+    </section>
+
+  </main>
+</body>
+</html>
